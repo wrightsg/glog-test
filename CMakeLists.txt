@@ -3,13 +3,20 @@ cmake_minimum_required(VERSION 3.6.2)
 
 add_subdirectory(lib)
 
-add_executable(hello_world hello_world.cpp)
+foreach(exe
+	hello_world
+	use_gflags
+)
 
-target_link_libraries(hello_world glog)
+add_executable(${exe} ${exe}.cpp)
+
+target_link_libraries(${exe} glog)
 
 # glog seems to require imagehlp library when compiling with GCC under Windows (MinGW)
 if(WIN32)
 	if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-		target_link_libraries(hello_world imagehlp)
+		target_link_libraries(${exe} imagehlp)
 	endif()
 endif()
+
+endforeach()
